@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>D3 Test</title>
+    <script type="text/javascript" src="./d3/d3.js"></script>
+  </head>
+
+  <body></body>
+
+  <script type="text/javascript">
+    let dataset = [5, 10, 15, 20, 25];
+
+    d3.select("body")
+      .selectAll("p")
+      .data(dataset)
+      .enter()
+      .append("p")
+      .text(function(d) {
+        return d;
+      });
+
+    // var dataTyper = function(d) {
+    //   return {
+    //     Name: d.Name,
+    //     Age: parseInt(d.Age),
+    //     WeightLoss: parseFloat(d.WeightLoss),
+    //     PSRStart: parseFloat(d.PSRStart),
+    //     PSREnd: parseFloat(d.PSREnd),
+    //     Leave: d.Leave === "TRUE" ? true : false,
+    //     LeaveDay: parseInt(d.LeaveDay),
+    //     ID: parseInt(d.ID),
+    //     Sex: d.Sex
+    //   };
+    // };
+
+    // d3.csv("./psrs.csv", dataTyper, function(error, data) {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     dataset = data;
+    //     console.log(data);
+    //   }
+    // });
+  </script>
+</html>
