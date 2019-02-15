@@ -4,20 +4,34 @@
     <meta charset="utf-8" />
     <title>D3 Test</title>
     <script type="text/javascript" src="./d3/d3.js"></script>
+    <style>
+      div.bar {
+        display: inline-block;
+        width: 20px;
+        height: 75px;
+        background-color: aquamarine;
+        margin-left: 5px;
+      }
+    </style>
   </head>
 
   <body></body>
 
   <script type="text/javascript">
-    let dataset = [5, 10, 15, 20, 25];
+    let dataset = [];
+
+    for (var i = 0; i < 25; i++) {
+      dataset.push(Math.random() * 30);
+    }
 
     d3.select("body")
       .selectAll("p")
       .data(dataset)
       .enter()
-      .append("p")
-      .text(function(d) {
-        return d;
+      .append("div")
+      .attr("class", "bar")
+      .style("height", function(d) {
+        return d * 5 + "px";
       });
 
     // var dataTyper = function(d) {
