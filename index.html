@@ -5,12 +5,8 @@
     <title>D3 Test</title>
     <script type="text/javascript" src="./d3/d3.js"></script>
     <style>
-      div.bar {
-        display: inline-block;
-        width: 20px;
-        height: 75px;
-        background-color: aquamarine;
-        margin-left: 5px;
+      svg {
+        /* padding: 20px; */
       }
     </style>
   </head>
@@ -18,43 +14,165 @@
   <body></body>
 
   <script type="text/javascript">
-    let dataset = [];
+    let dataset = [
+      [5, 20],
+      [480, 90],
+      [250, 50],
+      [100, 33],
+      [330, 95],
+      [410, 12],
+      [475, 44],
+      [25, 67],
+      [85, 21],
+      [220, 88],
+      [700, 200]
+    ];
 
-    for (var i = 0; i < 25; i++) {
-      dataset.push(Math.random() * 30);
-    }
+    let w = 700;
+    let h = 300;
+    let barPadding = 3;
+    let padding = 20;
 
-    d3.select("body")
-      .selectAll("p")
+    var xscale = d3
+      .scaleLinear()
+      .domain([
+        0,
+        d3.max(dataset, function(d) {
+          return d[0];
+        })
+      ])
+      .range([padding, w - padding * 2]);
+
+    var yscale = d3
+      .scaleLinear()
+      .domain([
+        0,
+        d3.max(dataset, function(d) {
+          return d[1];
+        })
+      ])
+      .range([h - padding, padding]);
+
+    let ascale = d3
+      .scaleSqrt()
+      .domain([
+        0,
+        d3.max(dataset, function(d) {
+          return d[1];
+        })
+      ])
+      .range([0, 20]);
+
+    var scatterPlot = d3
+      .select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+    scatterPlot
+      .selectAll("circle")
       .data(dataset)
       .enter()
-      .append("div")
-      .attr("class", "bar")
-      .style("height", function(d) {
-        return d * 5 + "px";
+      .append("circle")
+      .attr("cx", function(d) {
+        return xscale(d[0]);
+      })
+      .attr("cy", function(d) {
+        return yscale(d[1]);
+      })
+      .attr("r", function(d) {
+        return ascale(d[1]);
       });
 
-    // var dataTyper = function(d) {
-    //   return {
-    //     Name: d.Name,
-    //     Age: parseInt(d.Age),
-    //     WeightLoss: parseFloat(d.WeightLoss),
-    //     PSRStart: parseFloat(d.PSRStart),
-    //     PSREnd: parseFloat(d.PSREnd),
-    //     Leave: d.Leave === "TRUE" ? true : false,
-    //     LeaveDay: parseInt(d.LeaveDay),
-    //     ID: parseInt(d.ID),
-    //     Sex: d.Sex
-    //   };
-    // };
+    scatterPlot
+      .selectAll("text")
+      .data(dataset)
+      .enter()
+      .append("text")
+      .text(function(d) {
+        return d[0] + ", " + d[1];
+      })
+      .attr("x", function(d) {
+        return xscale(d[0]);
+      })
+      .attr("y", function(d) {
+        return yscale(d[1]);
+      })
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "11px")
+      .attr("fill", "red");
 
-    // d3.csv("./psrs.csv", dataTyper, function(error, data) {
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     dataset = data;
-    //     console.log(data);
-    //   }
-    // });
+    // for (var i = 0; i < 25; i++) {
+    //   dataset.push(Math.floor(Math.random() * 30));
+    // }
+
+    // var bars = d3
+    //   .select("body")
+    //   .append("svg")
+    //   .attr("width", w)
+    //   .attr("height", h);
+
+    // bars
+    //   .selectAll("rect")
+    //   .data(dataset)
+    //   .enter()
+    //   .append("rect")
+    //   .attr("x", function(d, i) {
+    //     return i * (w / dataset.length);
+    //   })
+    //   .attr("y", function(d) {
+    //     return h - d * 3;
+    //   })
+    //   .attr("width", function(d) {
+    //     return w / dataset.length - barPadding;
+    //   })
+    //   .attr("height", function(d) {
+    //     return d * 3;
+    //   })
+    //   .attr("fill", function(d) {
+    //     return "rgb(0," + d * 8 + ", 0)";
+    //   });
+
+    // var barLabels = bars
+    //   .selectAll("text")
+    //   .data(dataset)
+    //   .enter()
+    //   .append("text")
+    //   .text(function(d) {
+    //     return d;
+    //   })
+    //   .attr("x", function(d, i) {
+    //     return i * (w / dataset.length) + 5;
+    //   })
+    //   .attr("y", function(d) {
+    //     return h - d * 3 + 15;
+    //   })
+    //   .attr("font-family", "sans-serif")
+    //   .attr("font-size", "12px")
+    //   .attr("fill", "white");
+
+    // var circles = d3
+    //   .select("body")
+    //   .append("svg")
+    //   .attr("width", w)
+    //   .attr("height", h);
+
+    // circles
+    //   .selectAll("circle")
+    //   .data(dataset)
+    //   .enter()
+    //   .append("circle")
+    //   .attr("cx", function(d, i) {
+    //     return i * 25 + 12.5;
+    //   })
+    //   .attr("cy", h / 2)
+    //   .attr("r", function(d) {
+    //     return d;
+    //   })
+    //   .attr("fill", "yellow")
+    //   .attr("stroke", "orange")
+    //   .attr("stroke-width", function(d) {
+    //     return d / 2;
+    //   });
   </script>
 </html>
